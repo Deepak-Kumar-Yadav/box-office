@@ -1,20 +1,41 @@
 import React, { useState } from 'react';
 import MainPageLayout from '../Components/MainPageLayout';
+import apiGet from '../misc/config';
 
 export default function Home() {
   const [input, setInput] = useState('');
+  const [searchResult, setSearchResult] = useState(null);
+  const [searchOption, setSearchOption] = useState('shows');
   const onInputChange = event => {
     setInput(event.target.value);
   };
   const onSearch = () => {
-    fetch(`https://api.tvmaze.com/search/shows?q=${input}`)
-      .then(r => r.json())
-      .then(result => console.log(result));
+    apiGet(`/search/${searchOption}?q=${input}`).then(result =>
+      setSearchResult(result)
+    );
   };
   const onKeyDown = event => {
     if (event.keyCode === 13) {
       onSearch();
     }
+  };
+  const renderResult = () => {
+    if (searchResult && searchResult.length === 0) {
+      return <div>No Result</div>;
+    }
+    if (searchResult && searchResult.length > 0) {
+      return searchResult[0].show
+        ? searchResult.map(item => (
+            <div key={item.show.id}>{item.show.name}</div>
+          ))
+        : searchResult.map(item => (
+            <div key={item.person.id}>{item.person.name}</div>
+          ));
+    }
+    return null;
+  };
+  const onSearchOption = event => {
+    setSearchOption(event.target.value);
   };
   return (
     <MainPageLayout>
@@ -24,9 +45,33 @@ export default function Home() {
         onChange={onInputChange}
         onKeyDown={onKeyDown}
       />
-      <button type="button" onClick={onSearch}>
+      <div>
+        <label htmlFor="showSearch">
+          Show{' '}
+          <input
+            type="radio"
+            name="box-office-result"
+            id="showSearch"
+            value="shows"
+            onChange={onSearchOption}
+          />
+        </label>
+
+        <label htmlFor="actorSearch">
+          Actor{' '}
+          <input
+            type="radio"
+            name="box-office-result"
+            id="actorSearch"
+            value="people"
+            onClick={onSearchOption}
+          />
+        </label>
+      </div>
+      <button type="button" onChange={onSearch}>
         Search
       </button>
+      {renderResult()}
     </MainPageLayout>
   );
 }
