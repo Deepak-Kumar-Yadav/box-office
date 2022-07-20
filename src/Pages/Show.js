@@ -6,6 +6,7 @@ import Details from '../Components/Show/Details';
 import Seasons from '../Components/Show/Seasons';
 import ShowMainData from '../Components/Show/ShowMainData';
 import apiGet from '../misc/config';
+import { InfoBlock, ShowPageWrapper } from './Show.styled';
 
 export default function Show() {
   const { id } = useParams();
@@ -33,8 +34,6 @@ export default function Show() {
     };
   }, [id]);
 
-  console.log(show);
-
   if (isLoading) {
     return <div>Still Loading</div>;
   }
@@ -44,7 +43,7 @@ export default function Show() {
   }
 
   return (
-    <div>
+    <ShowPageWrapper>
       <ShowMainData
         image={show.image}
         name={show.name}
@@ -52,22 +51,22 @@ export default function Show() {
         summary={show.summary}
         tags={show.genres}
       />
-      <div>
+      <InfoBlock>
         <h2>Details</h2>
         <Details
           status={show.status}
           network={show.network}
           premiered={show.premiered}
         />
-      </div>
-      <div>
+      </InfoBlock>
+      <InfoBlock>
         <h2>Seasons</h2>
         <Seasons seasons={show._embedded.seasons} />
-      </div>
-      <div>
+      </InfoBlock>
+      <InfoBlock>
         <h2>Cast</h2>
         <Cast cast={show._embedded.cast} />
-      </div>
-    </div>
+      </InfoBlock>
+    </ShowPageWrapper>
   );
 }
