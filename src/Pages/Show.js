@@ -1,5 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cast from '../Components/Show/Cast';
+import Details from '../Components/Show/Details';
+import Seasons from '../Components/Show/Seasons';
+import ShowMainData from '../Components/Show/ShowMainData';
 import apiGet from '../misc/config';
 
 export default function Show() {
@@ -38,5 +43,31 @@ export default function Show() {
     return <div>Error Occured - {error}</div>;
   }
 
-  return <div>This is Show page</div>;
+  return (
+    <div>
+      <ShowMainData
+        image={show.image}
+        name={show.name}
+        rating={show.rating}
+        summary={show.summary}
+        tags={show.genres}
+      />
+      <div>
+        <h2>Details</h2>
+        <Details
+          status={show.status}
+          network={show.network}
+          premiered={show.premiered}
+        />
+      </div>
+      <div>
+        <h2>Seasons</h2>
+        <Seasons seasons={show._embedded.seasons} />
+      </div>
+      <div>
+        <h2>Cast</h2>
+        <Cast cast={show._embedded.cast} />
+      </div>
+    </div>
+  );
 }
