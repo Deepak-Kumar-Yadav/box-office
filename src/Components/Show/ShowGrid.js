@@ -6,7 +6,6 @@ import { useShows } from '../../misc/Custom-hooks';
 
 export default function ShowGrid({ data }) {
   const [starredShows, dispatchStarred] = useShows();
-
   return (
     <FlexGrid>
       {data.map(item => {
