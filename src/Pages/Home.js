@@ -4,6 +4,13 @@ import MainPageLayout from '../Components/MainPageLayout';
 import ShowGrid from '../Components/Show/ShowGrid';
 import apiGet from '../misc/config';
 import { useLastQuery } from '../misc/Custom-hooks';
+import {
+  RadioInputsWrapper,
+  SearchButtonWrapper,
+  SearchInput,
+} from './Home.styled';
+
+import { RadioWrapper } from './Radio.styled';
 
 export default function Home() {
   const [input, setInput] = useLastQuery();
@@ -40,38 +47,46 @@ export default function Home() {
   };
   return (
     <MainPageLayout>
-      <input
+      <SearchInput
         type="text"
         value={input}
         onChange={onInputChange}
         onKeyDown={onKeyDown}
       />
-      <div>
-        <label htmlFor="showSearch">
-          Show{' '}
-          <input
-            type="radio"
-            name="box-office-result"
-            id="showSearch"
-            value="shows"
-            onChange={onSearchOption}
-          />
-        </label>
+      <RadioInputsWrapper>
+        <div>
+          <RadioWrapper htmlFor="showSearch">
+            Show{' '}
+            <input
+              type="radio"
+              name="box-office-result"
+              id="showSearch"
+              value="shows"
+              onChange={onSearchOption}
+            />
+            <span />
+          </RadioWrapper>
+        </div>
+        <div>
+          <RadioWrapper htmlFor="actorSearch">
+            Actor{' '}
+            <input
+              type="radio"
+              name="box-office-result"
+              id="actorSearch"
+              value="people"
+              onClick={onSearchOption}
+            />
+            <span />
+          </RadioWrapper>
+        </div>
+      </RadioInputsWrapper>
+      <SearchButtonWrapper>
+        <button type="button" onClick={onSearch}>
+          Search
+        </button>
+      </SearchButtonWrapper>
 
-        <label htmlFor="actorSearch">
-          Actor{' '}
-          <input
-            type="radio"
-            name="box-office-result"
-            id="actorSearch"
-            value="people"
-            onClick={onSearchOption}
-          />
-        </label>
-      </div>
-      <button type="button" onClick={onSearch}>
-        Search
-      </button>
       {renderResult()}
     </MainPageLayout>
   );
